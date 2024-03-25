@@ -14,6 +14,9 @@ part 'tasks_state.dart';
 class TasksBloc extends Bloc<TasksEvent, TasksState> {
   TasksBloc(this.tasksRepository) : super(TasksInitial()) {
     on<GetTasks>(_onGetTasks);
+    on<UpdateTask>(_onUpdateTask);
+    on<DeleteTask>(_onDeleteTask);
+    on<CreateTask>(_onCreateTask);
   }
   final TasksRepository tasksRepository;
   FutureOr<void> _onGetTasks(GetTasks event, Emitter<TasksState> emit) async {
@@ -26,6 +29,47 @@ class TasksBloc extends Bloc<TasksEvent, TasksState> {
       )),
       (r) => emit(
         TasksLoaded(r),
+      ),
+    );
+  }
+
+  FutureOr<void> _onUpdateTask(
+      UpdateTask event, Emitter<TasksState> emit) async {
+    emit(TasksLoading());
+    final tasks =
+        await tasksRepository.updateTask(event.updatedTask, event.taskList);
+    tasks.fold(
+      (l) => emit(TasksError(
+        l.message,
+      )),
+      (r) => emit(
+        UpdatedTask(r),
+      ),
+    );
+  }
+
+  FutureOr<void> _onDeleteTask(DeleteTask event, Emitter<TasksState> emit) async {
+    emit(TasksLoading());
+    final tasks = await tasksRepository.deleteTask(event.task, event.taskList);
+    tasks.fold(
+      (l) => emit(TasksError(
+        l.message,
+      )),
+      (r) => emit(
+        DeletedTask(r),
+      ),
+    );
+  }
+
+  FutureOr<void> _onCreateTask(CreateTask event, Emitter<TasksState> emit) async {
+    emit(TasksLoading());
+    final tasks = await tasksRepository.createTask(event.task, event.taskList);
+    tasks.fold(
+      (l) => emit(TasksError(
+        l.message,
+      )),
+      (r) => emit(
+        CreatedTask(r),
       ),
     );
   }

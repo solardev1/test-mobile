@@ -1,5 +1,6 @@
 enum AppRoute {
   home,
-  editTask
+  editTask,
+  createTask
 
 }
