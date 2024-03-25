@@ -76,21 +76,27 @@ android {
     }
 
     flavorDimensions "default"
-    productFlavors { 
+   productFlavors { 
         production {
             dimension "default"
             applicationIdSuffix ""
-            manifestPlaceholders = [appName: "Tasks"]
+            manifestPlaceholders = [appName: "Tasks Test"]
         }
         staging {
             dimension "default"
             applicationIdSuffix ".stg"
-            manifestPlaceholders = [appName: "[STG] Tasks"]
+            manifestPlaceholders = [appName: "[STG] Tasks Test"]
         }
         development {
             dimension "default"
             applicationIdSuffix ".dev"
-            manifestPlaceholders = [appName: "[DEV] Tasks"]
+            manifestPlaceholders = [appName: "[DEV] Tasks Test"]
+        }
+        mock {
+            dimension "default"
+            applicationIdSuffix ".mock"
+            manifestPlaceholders = [appName: "[MOCK] Tasks Test"]
+            resValue "string", "app_name", "[MOCK]Tasks Test"
         }
     }
 
