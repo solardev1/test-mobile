@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:tasks/core/routes/list_routers.dart';
+import 'package:tasks/core/theme/app_colors.dart';
 import 'package:tasks/features/tasks/domain/entities/task.dart';
 import 'package:tasks/features/tasks/presentation/logic/bloc/bloc/tasks_bloc.dart';
 
@@ -13,11 +15,21 @@ class EditPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: AppColors.primaryLigthBackground,
       appBar: AppBar(
-        title: Text('Editar Tarea'),
+        flexibleSpace: Container(
+          decoration: BoxDecoration(
+            color: AppColors.edit,
+            borderRadius: BorderRadius.only(
+              bottomLeft: Radius.circular(20.r),
+              bottomRight: Radius.circular(20.r),
+            ),
+          ),
+        ),
+        title: Text('Editar Tarea', style: TextStyle(fontSize: 20.sp)),
       ),
       body: Padding(
-        padding: const EdgeInsets.all(16.0),
+        padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 16.h),
         child: EditTaskForm(
           task: arguments.task,
           tasks: arguments.tasks,
@@ -65,7 +77,8 @@ class _EditTaskFormState extends State<EditTaskForm> {
           children: [
             TextFormField(
               controller: _titleController,
-              decoration: InputDecoration(labelText: 'Título'),
+              decoration: InputDecoration(
+                  labelText: 'Título', labelStyle: TextStyle(fontSize: 16.sp)),
               validator: (value) {
                 if (value == null || value.isEmpty) {
                   return 'Por favor, ingresa un título';
@@ -75,7 +88,9 @@ class _EditTaskFormState extends State<EditTaskForm> {
             ),
             TextFormField(
               controller: _descriptionController,
-              decoration: InputDecoration(labelText: 'Descripción'),
+              decoration: InputDecoration(
+                  labelText: 'Descripción',
+                  labelStyle: TextStyle(fontSize: 16.sp)),
               validator: (value) {
                 if (value == null || value.isEmpty) {
                   return 'Por favor, ingresa una descripción';
@@ -85,7 +100,9 @@ class _EditTaskFormState extends State<EditTaskForm> {
             ),
             TextFormField(
               controller: _priorityController,
-              decoration: InputDecoration(labelText: 'Prioridad'),
+              decoration: InputDecoration(
+                  labelText: 'Prioridad',
+                  labelStyle: TextStyle(fontSize: 16.sp)),
               validator: (value) {
                 if (value == null || value.isEmpty) {
                   return 'Por favor, ingresa una prioridad';
@@ -93,17 +110,17 @@ class _EditTaskFormState extends State<EditTaskForm> {
                 return null;
               },
             ),
-            SizedBox(height: 16),
+            SizedBox(height: 16.h),
             ElevatedButton(
               onPressed: () {
                 if (_formKey.currentState!.validate()) {
-                  // Aquí puedes implementar la lógica para guardar la tarea editada
                   final taskUpdated = TaskDTO(
                     id: widget.task.id,
                     title: _titleController.text,
                     description: _descriptionController.text,
-                    priority: _priorityController.text,
+                    priority: _priorityController.text.capitalize(),
                   );
+
                   context
                       .read<TasksBloc>()
                       .add(UpdateTask(taskUpdated, widget.tasks));
@@ -111,7 +128,7 @@ class _EditTaskFormState extends State<EditTaskForm> {
                       extra: widget.tasks);
                 }
               },
-              child: Text('Guardar'),
+              child: Text('Guardar', style: TextStyle(fontSize: 16.sp)),
             ),
           ],
         ),
@@ -125,6 +142,15 @@ class _EditTaskFormState extends State<EditTaskForm> {
     _descriptionController.dispose();
     _priorityController.dispose();
     super.dispose();
+  }
+}
+
+extension StringExtension on String {
+  String capitalize() {
+    if (isEmpty) {
+      return this;
+    }
+    return '${this[0].toUpperCase()}${substring(1)}';
   }
 }
 

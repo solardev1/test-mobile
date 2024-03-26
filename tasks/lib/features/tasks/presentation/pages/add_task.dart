@@ -1,35 +1,45 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:tasks/core/routes/list_routers.dart';
+import 'package:tasks/core/theme/app_colors.dart';
 import 'package:tasks/features/tasks/domain/entities/task.dart';
 import 'package:tasks/features/tasks/presentation/logic/bloc/bloc/tasks_bloc.dart';
 import 'package:uuid/uuid.dart';
 
-
 class CreatePage extends StatelessWidget {
-  CreatePage({Key? key, required this.tasks});
+  const CreatePage({required this.tasks, super.key});
 
   final List<TaskDTO> tasks;
-
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: AppColors.primaryLigthBackground,
       appBar: AppBar(
-        title: Text('Crear Tarea'),
+        flexibleSpace: Container(
+          decoration: BoxDecoration(
+            color: AppColors.primary,
+            borderRadius: BorderRadius.only(
+              bottomLeft: Radius.circular(20.r),
+              bottomRight: Radius.circular(20.r),
+            ),
+          ),
+        ),
+        title: Text('Crear Tarea',
+            style: TextStyle(fontSize: 20.sp, color: Colors.white)),
       ),
       body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: CreateTaskForm( tasks: tasks),
+        padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 16.h),
+        child: CreateTaskForm(tasks: tasks),
       ),
     );
   }
 }
 
 class CreateTaskForm extends StatefulWidget {
-  const CreateTaskForm({Key? key, required this.tasks});
-
+  const CreateTaskForm({required this.tasks, super.key});
 
   final List<TaskDTO> tasks;
 
@@ -39,9 +49,9 @@ class CreateTaskForm extends StatefulWidget {
 
 class _CreateTaskFormState extends State<CreateTaskForm> {
   final _formKey = GlobalKey<FormState>();
-  TextEditingController _titleController = TextEditingController();
-  TextEditingController _descriptionController = TextEditingController();
-  TextEditingController _priorityController = TextEditingController();
+  final TextEditingController _titleController = TextEditingController();
+  final TextEditingController _descriptionController = TextEditingController();
+  final TextEditingController _priorityController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -58,7 +68,11 @@ class _CreateTaskFormState extends State<CreateTaskForm> {
           children: [
             TextFormField(
               controller: _titleController,
-              decoration: InputDecoration(labelText: 'Título'),
+              decoration: InputDecoration(
+                  labelText: 'Título',
+                  labelStyle: TextStyle(
+                    fontSize: 16.sp,
+                  )),
               validator: (value) {
                 if (value == null || value.isEmpty) {
                   return 'Por favor, ingresa un título';
@@ -68,7 +82,11 @@ class _CreateTaskFormState extends State<CreateTaskForm> {
             ),
             TextFormField(
               controller: _descriptionController,
-              decoration: InputDecoration(labelText: 'Descripción'),
+              decoration: InputDecoration(
+                  labelText: 'Descripción',
+                  labelStyle: TextStyle(
+                    fontSize: 16.sp,
+                  )),
               validator: (value) {
                 if (value == null || value.isEmpty) {
                   return 'Por favor, ingresa una descripción';
@@ -78,7 +96,11 @@ class _CreateTaskFormState extends State<CreateTaskForm> {
             ),
             TextFormField(
               controller: _priorityController,
-              decoration: InputDecoration(labelText: 'Prioridad'),
+              decoration: InputDecoration(
+                  labelText: 'Prioridad',
+                  labelStyle: TextStyle(
+                    fontSize: 16.sp,
+                  )),
               validator: (value) {
                 if (value == null || value.isEmpty) {
                   return 'Por favor, ingresa una prioridad';
@@ -86,20 +108,25 @@ class _CreateTaskFormState extends State<CreateTaskForm> {
                 return null;
               },
             ),
-            SizedBox(height: 16),
+            SizedBox(height: 16.h),
             ElevatedButton(
               onPressed: () {
                 if (_formKey.currentState!.validate()) {
                   final newTask = TaskDTO(
-                    id:  const Uuid().v4().substring(0, 8),
+                    id: const Uuid().v4().substring(0, 8),
                     title: _titleController.text,
                     description: _descriptionController.text,
                     priority: _priorityController.text,
                   );
-                  context.read<TasksBloc>().add(CreateTask(newTask, widget.tasks));
+                  context
+                      .read<TasksBloc>()
+                      .add(CreateTask(newTask, widget.tasks));
                 }
               },
-              child: Text('Guardar'),
+              child: Text('Guardar',
+                  style: TextStyle(
+                    fontSize: 16.sp,
+                  )),
             ),
           ],
         ),

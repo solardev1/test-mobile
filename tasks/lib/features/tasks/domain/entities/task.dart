@@ -16,3 +16,12 @@ class TaskDTO {
     return 'TaskDTO(id: $id, title: $title, description: $description, priority: $priority)';
   }
 }
+
+
+enum PriorityFilter {
+  all,
+  alta,
+  media,
+  baja,
+  otras,
+}
