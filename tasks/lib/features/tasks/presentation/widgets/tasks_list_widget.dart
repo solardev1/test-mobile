@@ -4,6 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:tasks/core/routes/list_routers.dart';
 import 'package:tasks/core/theme/app_colors.dart';
+import 'package:tasks/core/utils/tasks_utils.dart';
 import 'package:tasks/features/tasks/domain/entities/task.dart';
 import 'package:tasks/features/tasks/presentation/logic/bloc/bloc/tasks_bloc.dart';
 import 'package:tasks/features/tasks/presentation/pages/edit_task.dart';
@@ -134,75 +135,76 @@ class _TaskListScreenState extends State<TaskListScreen> {
           );
         },
       ),
-      floatingActionButton: Stack(
-        children: [
-          Align(
-            alignment: Alignment.bottomRight,
-            child: BlocBuilder<TasksBloc, TasksState>(
-              builder: (context, state) {
-                return FloatingActionButton(
-                  backgroundColor: AppColors.primary.withOpacity(0.8),
-                  onPressed: () {
-                    context.pushNamed(AppRoute.createTask.name,
-                        extra:
-                            state is TasksLoaded ? state.tasks : widget.tasks);
-                  },
-                  child: const Icon(
-                    Icons.add,
-                    color: Colors.white,
-                  ),
-                );
-              },
-            ),
-          ),
-          Align(
-            alignment: Alignment.bottomLeft,
-            child: Padding(
-              padding: EdgeInsets.only(
-                left: 35.w,
-              ),
-              child: FloatingActionButton(
-                
-                backgroundColor: AppColors.secondary.withOpacity(0.8),
-                onPressed: () {},
-                child: PopupMenuButton<PriorityFilter>(
-                  icon: Icon(Icons.filter_list_rounded,
-                      color: Colors.white, size: 28.sp),
-                  onSelected: (PriorityFilter result) {
-                    setState(() {
-                      _currentFilter = result;
-                    });
-                  },
-                  itemBuilder: (BuildContext context) =>
-                      <PopupMenuEntry<PriorityFilter>>[
-                    PopupMenuItem<PriorityFilter>(
-                      
-                      value: PriorityFilter.all,
-                      child: Text('Todos', style: TextStyle(fontSize: 14.sp)),
-                    ),
-                    PopupMenuItem<PriorityFilter>(
-                      value: PriorityFilter.alta,
-                      child: Text('Alta', style: TextStyle(fontSize: 14.sp)),
-                    ),
-                    PopupMenuItem<PriorityFilter>(
-                      value: PriorityFilter.media,
-                      child: Text('Media', style: TextStyle(fontSize: 14.sp)),
-                    ),
-                    PopupMenuItem<PriorityFilter>(
-                      value: PriorityFilter.baja,
-                      child: Text('Baja', style: TextStyle(fontSize: 14.sp)),
-                    ),
-                    PopupMenuItem<PriorityFilter>(
-                      value: PriorityFilter.otras,
-                      child: Text('Otras', style: TextStyle(fontSize: 14.sp)),
-                    ),
-                  ],
+      floatingActionButton: CustomActionsButton(),
+    );
+  }
+
+  Stack CustomActionsButton() {
+    return Stack(
+      children: [
+        Align(
+          alignment: Alignment.bottomRight,
+          child: BlocBuilder<TasksBloc, TasksState>(
+            builder: (context, state) {
+              return FloatingActionButton(
+                backgroundColor: AppColors.primary.withOpacity(0.8),
+                onPressed: () {
+                  context.pushNamed(AppRoute.createTask.name,
+                      extra: state is TasksLoaded ? state.tasks : widget.tasks);
+                },
+                child: const Icon(
+                  Icons.add,
+                  color: Colors.white,
                 ),
+              );
+            },
+          ),
+        ),
+        Align(
+          alignment: Alignment.bottomLeft,
+          child: Padding(
+            padding: EdgeInsets.only(
+              left: 35.w,
+            ),
+            child: FloatingActionButton(
+              backgroundColor: AppColors.secondary.withOpacity(0.8),
+              onPressed: () {},
+              child: PopupMenuButton<PriorityFilter>(
+                icon: Icon(Icons.filter_list_rounded,
+                    color: Colors.white, size: 28.sp),
+                onSelected: (PriorityFilter result) {
+                  setState(() {
+                    _currentFilter = result;
+                  });
+                },
+                itemBuilder: (BuildContext context) =>
+                    <PopupMenuEntry<PriorityFilter>>[
+                  PopupMenuItem<PriorityFilter>(
+                    value: PriorityFilter.all,
+                    child: Text('Todos', style: TextStyle(fontSize: 14.sp)),
+                  ),
+                  PopupMenuItem<PriorityFilter>(
+                    value: PriorityFilter.alta,
+                    child: Text('Alta', style: TextStyle(fontSize: 14.sp)),
+                  ),
+                  PopupMenuItem<PriorityFilter>(
+                    value: PriorityFilter.media,
+                    child: Text('Media', style: TextStyle(fontSize: 14.sp)),
+                  ),
+                  PopupMenuItem<PriorityFilter>(
+                    value: PriorityFilter.baja,
+                    child: Text('Baja', style: TextStyle(fontSize: 14.sp)),
+                  ),
+                  PopupMenuItem<PriorityFilter>(
+                    value: PriorityFilter.otras,
+                    child: Text('Otras', style: TextStyle(fontSize: 14.sp)),
+                  ),
+                ],
               ),
             ),
           ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 
@@ -222,5 +224,4 @@ class _TaskListScreenState extends State<TaskListScreen> {
         return widget.tasks;
     }
   }
-
 }

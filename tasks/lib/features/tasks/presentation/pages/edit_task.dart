@@ -4,6 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:tasks/core/routes/list_routers.dart';
 import 'package:tasks/core/theme/app_colors.dart';
+import 'package:tasks/core/utils/tasks_utils.dart';
 import 'package:tasks/features/tasks/domain/entities/task.dart';
 import 'package:tasks/features/tasks/presentation/logic/bloc/bloc/tasks_bloc.dart';
 
@@ -50,9 +51,9 @@ class EditTaskForm extends StatefulWidget {
 
 class _EditTaskFormState extends State<EditTaskForm> {
   final _formKey = GlobalKey<FormState>();
-  TextEditingController _titleController = TextEditingController();
-  TextEditingController _descriptionController = TextEditingController();
-  TextEditingController _priorityController = TextEditingController();
+  final TextEditingController _titleController = TextEditingController();
+  final TextEditingController _descriptionController = TextEditingController();
+  final TextEditingController _priorityController = TextEditingController();
 
   @override
   void initState() {
@@ -145,17 +146,3 @@ class _EditTaskFormState extends State<EditTaskForm> {
   }
 }
 
-extension StringExtension on String {
-  String capitalize() {
-    if (isEmpty) {
-      return this;
-    }
-    return '${this[0].toUpperCase()}${substring(1)}';
-  }
-}
-
-class EditParameters {
-  EditParameters({required this.task, required this.tasks});
-  final TaskDTO task;
-  final List<TaskDTO> tasks;
-}
