@@ -18,7 +18,7 @@
       ]
     },
     {
-      "name": "Launch staging",
+      "name": "Launch mock",
       "request": "launch",
       "type": "dart",
       "program": "lib/main_development.dart",
@@ -27,7 +27,7 @@
         "mock",
         "--target",
         "lib/main_development.dart",
-        "--dart-define=TASKS_ENVIRONMENT=dev",
+        "--dart-define=TASKS_ENVIRONMENT=mock",
         "--dart-define=TASKS_USE_MOCKS=true",
       ]
     },
