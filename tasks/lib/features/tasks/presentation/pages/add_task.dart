@@ -4,6 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:tasks/core/routes/list_routers.dart';
 import 'package:tasks/core/theme/app_colors.dart';
+import 'package:tasks/core/utils/tasks_utils.dart';
 import 'package:tasks/features/tasks/domain/entities/task.dart';
 import 'package:tasks/features/tasks/presentation/logic/bloc/bloc/tasks_bloc.dart';
 import 'package:uuid/uuid.dart';
@@ -116,7 +117,7 @@ class _CreateTaskFormState extends State<CreateTaskForm> {
                     id: const Uuid().v4().substring(0, 8),
                     title: _titleController.text,
                     description: _descriptionController.text,
-                    priority: _priorityController.text,
+                    priority: _priorityController.text.capitalize(),
                   );
                   context
                       .read<TasksBloc>()

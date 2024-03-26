@@ -187,14 +187,14 @@ Get User Info Use Case: Implements the business logic for retrieving user inform
 
 1. To generate the apk you must specify the `target flavor` and the `environment`
 ```sh
-$ flutter build apk --debug --flavor dev --dart-define=FINEX_ENVIRONMENT=dev -t lib/main_development.dart
+$ flutter build apk --debug --flavor dev --dart-define=TASKS_ENVIRONMENT=dev -t lib/main_development.dart
 ```
 
 ### Generate APK for MOCK
 
 1. Change the `target flavor` and the `environment`
 ```sh
-$ flutter build apk --debug --flavor mock --dart-define=FINEX_ENVIRONMENT=mock -t lib/main_development.dart
+$ flutter build apk --debug --flavor mock --dart-define=TASKS_ENVIRONMENT=dev --dart-define=TASKS_USE_MOCKS=true -t lib/main_development.dart --obfuscate --split-debug-info=/build
 ```
 
 
